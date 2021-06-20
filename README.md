@@ -138,7 +138,7 @@ https://user-images.githubusercontent.com/81222069/122671290-d9bff100-d200-11eb-
 
 ## 3.3. Part C: 로봇 팔 제어
 
-### 3.3.1. Camera Calibration
+### 3.3.1. Camera Calibration 코드
 
 우선 computer에서 roscore를 실행한다. calibration을 진행하기 위해 raspberry pi에서 아래 코드를 실행시킨다.
 
@@ -158,5 +158,34 @@ calibration 체스판: https://github.com/ROBOTIS-GIT/turtlebot3_autorace/blob/m
 
 체스판을 앞뒤로, 좌우로 기울여가면서 X, Y, Size, Skew 항목을 어느정도 채우게 되면 calibrate 버튼이 활성화  되고, calibrate된 후에 commit 버튼을 통해 calibration한 정보를 저장할 수 있다. commit이 완료된다면 camera calibration 과정은 완료된 것이다.
 
-### 3.3.2. Camera Calibration
+### 3.3.2. turtlebot3_automatic_parking_vision 코드
+
+본 코드를 실행시키기에 앞서 코드를 수정해야한다. 우선 로봇을 회전, 병진 시키는 코드는 아래와 같다.
+
+![image](https://user-images.githubusercontent.com/81222069/122672996-6ff81500-d209-11eb-8724-2f722a128bfe.png)
+
+해당 코드에서 fnGoStraight() 함수의 twist.linear.x 부분은 0.1이하로 바꿔줘야한다. 마찬가지로 fnTrackMarker() 함수의 twist.angular.z를 –angular_z * 0.7로 바꾼다.
+
+AR marker에 얼마나 가까이 갈지 정하는 함수는 아래와 같다.
+
+![image](https://user-images.githubusercontent.com/81222069/122673036-9453f180-d209-11eb-91e7-e1b4d530c1cd.png)
+
+위의 코드에서 if abs(self.marker_2d_pose_x) < 0.19 부분을 0.19에서 0.30으로 바꾸어 주었다. 약 30cm 거리를 두고 AR marker 앞에서 멈추게 하는 것이 목표이기 때문이다. 만약 로봇을 x, y축을 동시에 움직이고 싶다면 추가적으로 코드를 수정하면 된다. 하지만 오차를 최대한 줄이기 위해서는 linear하게만 움직이는 것이 최선의 방법이므로 이번 프로젝트에서도 y축으로먼저 움직이고 이후 x축으로만 움직였다.
+
+코드를 수정한뒤 automatic_parking_vision을 실행시키는 순서는 아래와 같다.
+
+    sudo apt-get install ros-kinetic-ar-track-alvar
+    sudo apt-get install ros-kinetic-ar-track-alvar-msgs
+    cd ~/catkin_ws/src
+    git clone https://github.com/ROBOTIS-GIT/turtlebot3_applications.git
+    git clone https://github.com/ROBOTIS-GIT/turtlebot3_applications_msgs.git
+    cd ~/catkin_ws && catkin_make
+    (remote pc) roscore
+    (turtlebot) roslaunch turtlebot3_bringup turtlebot3_robot.launch
+    (turtlebot) roslaunch turtlebot3_bringup turtlebot3_rpicamera.launch
+    (remote pc) rosrun image_transport republish compressed in:=raspicam_node/image raw out:=raspicam_node/image
+    (remote pc) ROS_NAMESPACE =raspicam_node rosrun image_proc image_proc image_raw:=image _approximate_s =true _queue_size:=20
+    (remote pc) roslaunch turtlebot3_automatic_parking_vision turtlebot3_automatic_parking_vision.launch
+    
+
 
