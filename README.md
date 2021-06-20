@@ -130,3 +130,33 @@ moveit_command 관련 참고 링크: https://github.com/minwoominwoominwoo7/op_m
 
 https://user-images.githubusercontent.com/81222069/122671290-d9bff100-d200-11eb-9ecb-d2add7af04e0.mp4
 
+# 3. Appendix
+
+## 3.1. Part A: 라이다를 이용한 Navigation
+
+## 3.2. Part B: AR 마커 인식 및 이동
+
+## 3.3. Part C: 로봇 팔 제어
+
+### 3.3.1. Camera Calibration
+
+우선 computer에서 roscore를 실행한다. calibration을 진행하기 위해 raspberry pi에서 아래 코드를 실행시킨다.
+
+    roslaunch turtlebot3_bringup turtlebot3_rpicamera.launch
+
+해당 코드는 pi camera를 실행시키는 코드이다. 위의 코드를 실행시킨뒤 rostopic list 명령어를 통해 image와 camera가 어떤 노드의 이름으로 발행되는지 확인할 수 있다. 이를 기억한 뒤 아래 코드를 computer에서 실행한다.
+
+    rosrun camera_calibration cameracalibrator.py --size 8x6 --square 0.108 image:=/rosberrypi_cam/image_raw camera:=/rosberrypi_cam
+
+위의 코드중 image:= 다음과 camera:= 다음 부분을 앞서 rostopic으로 확인한 image와 camera의 발행 노드 이름으로 바꾸어야 한다. 해당 코드를 실행시키면 아래와 같은 화면이 나온다.
+
+![image](https://user-images.githubusercontent.com/81222069/122672717-1216fd80-d208-11eb-8db1-3f929a86a159.png)
+
+calibration을 위해서 특정 체스판을 필요로 하는데 아래 링크에서 체스판을 다운 받을 수 있다.
+
+calibration 체스판: https://github.com/ROBOTIS-GIT/turtlebot3_autorace/blob/master/turtlebot3_autorace_camera/data/checkerboard_for_calibration.pdf
+
+체스판을 앞뒤로, 좌우로 기울여가면서 X, Y, Size, Skew 항목을 어느정도 채우게 되면 calibrate 버튼이 활성화  되고, calibrate된 후에 commit 버튼을 통해 calibration한 정보를 저장할 수 있다. commit이 완료된다면 camera calibration 과정은 완료된 것이다.
+
+### 3.3.2. Camera Calibration
+
