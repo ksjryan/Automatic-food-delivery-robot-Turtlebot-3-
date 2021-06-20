@@ -2,8 +2,7 @@
 
 # 1. Overview
 
-우리는 로봇이 장애물을 피해 특정 위치로 이동한 다음, 사물함을 열고 그 안에 있는 물건(음식)을 집고 원래 위치로 돌아오는 것을 목표로 한다.
-우리는 이러한 작업을 진행하기 위해 아래와 같은 플랫폼을 사용하게 되었다.
+우리는 로봇이 장애물을 피해 특정 위치로 이동한 다음, 사물함을 열고 그 안에 있는 물건(음식)을 집고 원래 위치로 돌아오는 것을 목표로 한다. 우리는 이러한 작업을 진행하기 위해 아래와 같은 플랫폼을 사용하게 되었다.
 
 ## 1.1. Platform
 
@@ -136,9 +135,7 @@ https://user-images.githubusercontent.com/81222069/122671290-d9bff100-d200-11eb-
 
 ## 3.2. Part B: AR 마커 인식 및 이동
 
-## 3.3. Part C: 로봇 팔 제어
-
-### 3.3.1. Camera Calibration 코드
+### 3.2.1. Camera Calibration 코드
 
 우선 computer에서 roscore를 실행한다. calibration을 진행하기 위해 raspberry pi에서 아래 코드를 실행시킨다.
 
@@ -158,7 +155,7 @@ calibration 체스판: https://github.com/ROBOTIS-GIT/turtlebot3_autorace/blob/m
 
 체스판을 앞뒤로, 좌우로 기울여가면서 X, Y, Size, Skew 항목을 어느정도 채우게 되면 calibrate 버튼이 활성화  되고, calibrate된 후에 commit 버튼을 통해 calibration한 정보를 저장할 수 있다. commit이 완료된다면 camera calibration 과정은 완료된 것이다.
 
-### 3.3.2. turtlebot3_automatic_parking_vision 코드
+### 3.2.2. turtlebot3_automatic_parking_vision 코드
 
 본 코드를 실행시키기에 앞서 코드를 수정해야한다. 우선 로봇을 회전, 병진 시키는 코드는 아래와 같다.
 
@@ -187,5 +184,39 @@ AR marker에 얼마나 가까이 갈지 정하는 함수는 아래와 같다.
     (remote pc) ROS_NAMESPACE =raspicam_node rosrun image_proc image_proc image_raw:=image _approximate_s =true _queue_size:=20
     (remote pc) roslaunch turtlebot3_automatic_parking_vision turtlebot3_automatic_parking_vision.launch
     
+## 3.3. Part C: 로봇 팔 제어
+
+## 3.4. 사물함 설계 관련
+
+### 3.4.1. 사물함의 프로토타입 설계 및 제작 (V1)
+
+로봇 팔이 문을 열고 물건을 꺼내는 시나리오에서의 사물함을 제작하였다. 먼저 전체적인 기능을 간략한 형태로 구현한 프로토타입을 제작하여, 성능과 구현 가능성, 내구성 등을 평가하였다. 프로토타입을 제작하기 위해 하드보드지를 테이프와 글루건으로 고정하여 개략적으로 설계하였다. 벽면, 벽 보강재, 문, 손잡이 등의 구조는 하드보드지로 제작하였다. 문은 자석을 이용하여 손잡이를 당겨 열 수 있도록 설계하였으며, 경첩을 이용하여 문의 최대 및 최소 열림 각도를 조절하였고, 탄성이 있는 PP 플라스틱 판을 겹쳐 문 손잡이를 조금만 당겨도 최대 각도까지 열릴 수 있도록 제작하였다.
+
+![image](https://user-images.githubusercontent.com/81222069/122673387-33c5b400-d20b-11eb-9566-66720f61227a.png)
+![image](https://user-images.githubusercontent.com/81222069/122673381-2f010000-d20b-11eb-980c-da8d57476dd8.png) *제작된 사물함 (V1)*
+
+### 3.4.2. 문제점 파악
+
+프로토타입을 통해 로봇의 그리퍼가 사물함 문을 여는 시나리오를 구현하였을 때, 여러 문제점이 발생하였다. 첫 번째로, 사물함이 고정되지 않아 그리퍼가 문을 제대로 여는 데 어려움이 있었다. 문을 열 때 자석에 연결된 부분이 같이 당겨지는 문제가 있었다. 두 번째로, 벽면과 기타 구조물들에 사용된 하드보드지 재질의 강성(stiffness)이 작아, 외부의 작은 힘에도 크게 변형이 일어났다. 특히 로봇의 그리퍼가 문 손잡이를 잡고 당길 때, 전체적인 구조가 크게 변형되었다. 마지막 세 번째로, 여러 번의 테스트를 거친 이후 구조물에 소성변형이 일어나, 테스트 이전과 이후의 구조가 변하였다. PP 플라스틱 판의 탄성력을 이용하여 문이 스스로 열리도록 설계하였으나, 몇 번의 테스트 이후 PP 플라스틱 판에 발생한 소성변형 때문에 구조물을 부분적으로 교체해야 했다.
+
+![image](https://user-images.githubusercontent.com/81222069/122673475-961eb480-d20b-11eb-822c-0c921ed0ff4e.png) *사물함 문을 여는 시나리오 테스트*
+
+### 3.4.2. 사물함의 프로토타입 설계 및 제작 (V2)
+
+대부분의 문제점이 구조물의 재질 자체의 내구성 때문에 발생하였다. 따라서 기존에 사용된 하드보드지 재질을 강성이 높은 재료로 변경하였다. 이 때 사용된 재료는 600×900 두께 10mm 우드락이며, 가공이 쉽고 강성이 높아 시나리오를 구현하는 데 적합하다고 판단하였다. 또한 로봇으로 인해 발생한 힘이 사물함의 문 부분에 집중되었기 때문에, 사물함의 문 부분의 강도를 높여야 시나리오를 안정적으로 수행할 수 있었다. 따라서 3D 프린터를 통해 제작한 보강재를 문 부분에 부착하여, 외부 힘에 대한 구조물의 강도를 높일 수 있었다. 3D 프린터로 출력하기 위한 보강재의 3D 모델링은 Solidworks 프로그램을 이용하여 제작하였으며, 사용된 3D 프린터는 Flashforge Finder 2.0 이고, 출력물의 강성과 내구성이 높아야 하기 때문에 PLA 재질의 필라멘트를 사용하였다.
+
+![image](https://user-images.githubusercontent.com/81222069/122673515-c403f900-d20b-11eb-8e16-31a6d211f713.png) *Solidworks를 통해 제작한 문 보강재의 3D 모델링*
+
+![image](https://user-images.githubusercontent.com/81222069/122673530-d41bd880-d20b-11eb-8aa9-93e98eabd30e.png)
+![image](https://user-images.githubusercontent.com/81222069/122673644-5c01e280-d20c-11eb-9824-c94a1aa4a0c7.png) *Flashforge Finder 2.0 와 PLA filament*
+
+또 사물함의 문을 여는 방법을 바꿔 프로토타입에서 발생한 문제를 해결하고자 했다. 기존의 문 손잡이를 당겨 여는 방법은 사물함 구조물에 큰 힘을 가하여, 구조물에 부담이 될 수 있었다. 또한 손잡이를 당겨 문을 열었을 때, 탄성이 있는 재질을 이용하여 스스로 문이 열리도록 하는 방법은, 탄성이 있는 재질에 소성변형이 발생하였을 때 구조물을 부분적으로 교체해야 했기 때문에 내구성 측면에서 부실하였다. 따라서 로봇의 그리퍼가 문에 부착된 버튼을 누르면, 문의 회전축 부분에 부착된 서보모터(SG90)가 회전하여 열리도록 설계를 변경하였다. 입력장치와 서보보터를 동작시키기 위해서 아두이노 uno 보드가 사용되었다.
+
+![image](https://user-images.githubusercontent.com/81222069/122673994-370e6f00-d20e-11eb-87a4-e3a68d04a0fb.png) *제작된 사물함 (V2)*
+
+최종적으로 제작된 사물함의 작동영상은 아래와 같다.
+
+https://user-images.githubusercontent.com/81222069/122674080-8b195380-d20e-11eb-8a24-940046afa8c2.mp4
+
 
 
