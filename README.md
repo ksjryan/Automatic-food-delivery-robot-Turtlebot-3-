@@ -236,7 +236,16 @@ AR marker에 얼마나 가까이 갈지 정하는 함수는 아래와 같다.
 
 최종적으로 제작된 사물함의 작동영상은 아래와 같다.
 
-https://user-images.githubusercontent.com/81222069/122674276-5bb71680-d20f-11eb-9f04-9c9353ad3364.mp4
+https://user-images.githubusercontent.com/81222069/122676808-91153180-d21a-11eb-8fe5-8819cbc764cd.mp4
 
+# 4. 시연영상 및 전체코드 다운로드
+
+아래 드라이브 링크 내 영상은 위의 과정들을 거쳐 만들어진 종합적인 Task를 수행하는 장면을 담고 있다.
+https://drive.google.com/file/d/19kDkX1ZS2LS7qNJWg1KdEW_JKrjYBiFB/view?usp=sharing
+
+![image](https://user-images.githubusercontent.com/81222069/122677089-ad659e00-d21b-11eb-80a5-9650032d0bef.png)
+
+또한 전체적인 코드를 압축하여 아래 드라이브 링크에 올려두었다.
+https://drive.google.com/file/d/14X-BTSVutT-NmOuz50ipUG4lrQy5I7ul/view?usp=sharing
 
 
