@@ -46,3 +46,20 @@
 ## 2.2. Part B: AR 마커 인식 및 이동
 
 ## 2.3. Part C: 로봇 팔 제어
+
+### 2.3.1 c++ 언어를 이용한 로봇 팔 제어 (초기)
+
+로봇 팔 제어를 위한 첫 시도는 c++ 언어를 기반으로 하여 작성되었다. 따라서 move_group_interface를 사용하여 inverse kinematics와 forward kinematics를 풀었다.
+![image](https://user-images.githubusercontent.com/81222069/122669941-6fa44d80-d1fa-11eb-9841-aa25e5143fbd.png)
+
+아래와 같이 C++ 코드의 일부를 가져와보았다. x, y, z 좌표를 입력해서 인버스 키네매틱을 푸는 함수 이다.
+
+![image](https://user-images.githubusercontent.com/81222069/122670062-fd803880-d1fa-11eb-818d-00c43f2ff529.png)
+
+ x, y, z 값을 적절히 입력하여 그래스핑 포인트를 찾고 일련의 순서로 사물함을 열어보는 코드를 작성하여 아래와 같이 실험해보았다.
+ 
+ 
+
+ 
+
+
