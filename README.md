@@ -38,11 +38,26 @@
 
 ⑧  물체를 바닥에 내려놓음
 
+
 # 2. Methodology & Results
 
 우리는 1.2.의 시나리오를 이루기 위해서 총 4개의 part (A,B,C)로 나누어 작업을 진행했다.
 
+
 ## 2.1. Part A: 라이다를 이용한 Navigation
+
+### 2.2.1. SLAM을 이용한 mapping과 Rviz를 이용한 navigation
+
+로봇을 대략적으로 물체 앞으로 이동시키기 위해서 이번 프로젝트에서는 rviz를 이용한 navigation module을 사용하기로 했다. 해당 module은 사용자가 원하는 위치를 입력하면 로봇의 경로를 장애물을 회피하여 생성시켜준다. Navigation module을 사용하기 위해선 map에 대한 정보가 필요하게 되는데 이는 SLAM을 이용했다. SLAM을 통해 얻은 map 정보는 아래와 같다.
+
+![image](https://user-images.githubusercontent.com/81222069/122674430-1cd59080-d210-11eb-84b7-f0fba8c6b2c5.png)
+
+이번 프로젝트에서 사용한 SLAM은 라이더 센서를 이용한 SLAM이다. SLAM을 통해 로봇은 map의 특징점을 뽑아낼 수 있게 되며 이를 바탕으로 현재 자신의 위치가 map에서 어디에 위치해있는지를 확인할 수 있게 된다. SLAM을 실행시킨뒤 map 정보를 얻을때는 키보드조작을 통해 로봇을 움직이며 map에 대한 정보를 얻었다. SLAM을 통해 얻은 map 정보를 로봇에게 전달한 뒤 rviz를 이용한 ros의 navigation 모듈을 이용해 로봇을 원하는 위치로 대략적으로 보내줄 수 있다. 아래는 navigation 모듈을 통해 로봇을 이동시키는 모습이다.
+
+### 2.2.2. Global localization
+
+SLAM을 통해 map에대한 정보를 로봇이 안다고 하더라도 로봇의 초기 위치는 전혀 모른다. 이를 global localiztion을 통해 알아낼 수 있다. 이번 프로젝트에선 초기 위치를 (0,0)으로 주었기 때문에 처음 시작할 때에는 global localiztion이 필요하지 않게 된다. 만약 다른 위치에서 시작하고 싶다면 그때 global localization을 사용해야 한다. 이번 프로젝트에서는 물체를 집은뒤에 global localization을 해주었다. 로봇이 물체를 집은 뒤 다시 navigation 모듈을 통해 초기 위치로 돌아와야하기 때문에 다시 rviz를 실행시켜야 한다. 이때 초기위치가 (0,0)이 아닌 박스 앞이기 때문에 map정보와 로봇이 인지하는 주변 환경과 매칭이 되지 않게 된다. global localization을 하기 위해 searching.py라는 코드를 작성했다. 해당 코드는 로봇을 회전시키는 코드로 회전을 하면서 로봇이 인지한 주변 환경과 map정보를 일치시키는 코드이다. 이후 CM.py 코드를 작성해 맵을 깔끔히 만들었다. 해당 코드와 과정은 appendix에서 자세히 나와있다.
+
 
 ## 2.2. Part B: AR 마커 인식 및 이동
 
@@ -50,7 +65,7 @@
 
 기존 계획은 AR maker 인식이 아닌 물체를 직접 인식한 후 인식한 물체의 depth 정보를 이용해 물체 앞까지 이동하는 것이었다. 이를 위해 raspberry pi에서 이번 프로젝트에서 사용할 예정이였던 Intel d345 camera를 인식하게 하기위해 관련된 package를 설치하려고 했다. 아래 주소를 통해서 해당 package를 설치했다.
 
-Intel d345 camera package: https://github.com/IntelRealSense/librealsense/blob/development/doc/installation.md
+*Intel d345 camera package:* https://github.com/IntelRealSense/librealsense/blob/development/doc/installation.md
 
 하지만 설치하는데 매우 오랜 시간이 걸리고, 설치를 다 했음에도 불구하고 많은 오류들과 함께 d345 camera를 인식하지 못했다. 그 이유에 대해서 찾아보니 intel d345 camera를 사용하기 위해서 주로 raspberry pi 4가 사용되는데 이번 프로젝트에서 사용되는 버전은 3이기 때문에 전혀 인식하지 못했다. 이 때문에 raspberry pi 말고 새로운 mini computer가 필요했고, 새로운 mini computer를 사용하기 위해서는 많은 시간과 다루는 방식을 다시 알아가야했기 때문에 다른 방식을 찾았고 이에 대한 해결 방안으로 AR marker를 인식하는 방식으로 바꾸게 되었다.
 
@@ -58,7 +73,7 @@ Intel d345 camera package: https://github.com/IntelRealSense/librealsense/blob/d
 
 AR maker를 인식한 후 해당 AR marker앞으로 이동하는 코드는 turtlebot3 github에 있는 turtlebot3_automatic_parking_vision을 이용했다. 해당 코드는 AR marker를 인식한 후 AR marker의 기존 크기를 이용해 거리를 측정하여 이동하는 방식이다. 해당 코드를 이용해 우리가 원하는 만큼 문이나 물체의 앞으로 가도록 코드를 수정하였다.
 
-turtlebot3_automatic_parking_vision 코드: https://github.com/ROBOTIS-GIT/turtlebot3_applications/tree/master/turtlebot3_automatic_parking_vision
+*turtlebot3_automatic_parking_vision 코드:* https://github.com/ROBOTIS-GIT/turtlebot3_applications/tree/master/turtlebot3_automatic_parking_vision
 
 이때 선행되어야하는 작업이 camera calibration 작업이다. camera calibration작업은 왜곡보정을 해주기 때문에 반드시 필요하다. 이번 프로젝트에서는 정밀하게 물체나 문 앞으로 로봇이 이동해야하기 때문에 calibration작업을 거치지 않고서 camera를 이용한다면 이상한 곳으로 로봇이 이동할 것이다. 이번 프로젝트에서 사용한 카메라는 turtlebot에 부착되어 있는 pi camera를 사용했고 이를 calibration할 수 있는 코드는 ros-kinetic파일에 있다. 코드를 사용하는 자세한 방법은 appendix에서 설명되어 있다.
 
@@ -129,9 +144,42 @@ moveit_command 관련 참고 링크: https://github.com/minwoominwoominwoo7/op_m
 
 https://user-images.githubusercontent.com/81222069/122671290-d9bff100-d200-11eb-9ecb-d2add7af04e0.mp4
 
+
 # 3. Appendix
 
 ## 3.1. Part A: 라이다를 이용한 Navigation
+
+### 3.1.1. SLAM & Navigation 코드
+
+우선 remote pc에서 roscore를 실행시킨다. 그 후 pc에서 로봇에 접속하기 위해 아래 명령어를 통해 접속한다.
+
+    ssh pi@{IP_ADDRESS_OF_RASPBERRY_PI}
+    
+이번 프로젝트에서 사용한 turtlebot 모델은 waffle_pi이기 때문에 remote pc에서 아래 코드를 통해 로봇의 모델을 전달한다.
+
+    export TURTLEBOT3_MODEL=waffle_pi
+    
+로봇을 초기 위치에 둔 이후 remote pc에서 SLAM을 아래 코드로 실행한다.
+
+    roslaunch turtlebot3_slam turtlebot3_slam.launch
+
+위의 코드를 실행 시키면 아래 그림과 같이 SLAM이 실행된다.
+
+![image](https://user-images.githubusercontent.com/81222069/122674587-c157d280-d210-11eb-909a-6e3fa2ea4fbe.png)
+
+이후 아래 코드를 이용해 키보드 조작으로 통해 로봇을 움직이며 map에 대한 정보를 얻는다.
+
+    roslaunch turtlebot3_teleop turtlebot3_teleop_key.launch
+    
+이번 프로젝트에서 사용하는 turtlebot의 특성상 뒤쪽의 map 정보는 잘 얻지 못했기 때문에 충분한 회전도 필요하다. map 정보를 충분히 얻었다면 아래 코드를 이용해 pc에 저장한다.
+
+    rosrun map_server map_saver –f ~/map
+    
+이후 로봇을 다시 초기 위치인 (0,0)에 위치한 후 아래 코드를 통해 navigation 모듈을 실행시킨다.
+
+    roslaunch turtlebot3_navigation turtlebot3_navigation.launch map_file:=$HOME/map.yaml
+    
+위의 코드로 실행시키게 되면 원하는 위치를 손으로 지정해주어야 한다. 자동화를 위해 정해진 위치로 보내고 싶다면 map 정보를 저장한 뒤 patrol.py코드를 이용한다면 정해진 위치로 자동으로 navigate할 수 있다.
 
 ## 3.2. Part B: AR 마커 인식 및 이동
 
@@ -151,7 +199,7 @@ https://user-images.githubusercontent.com/81222069/122671290-d9bff100-d200-11eb-
 
 calibration을 위해서 특정 체스판을 필요로 하는데 아래 링크에서 체스판을 다운 받을 수 있다.
 
-calibration 체스판: https://github.com/ROBOTIS-GIT/turtlebot3_autorace/blob/master/turtlebot3_autorace_camera/data/checkerboard_for_calibration.pdf
+*calibration 체스판:* https://github.com/ROBOTIS-GIT/turtlebot3_autorace/blob/master/turtlebot3_autorace_camera/data/checkerboard_for_calibration.pdf
 
 체스판을 앞뒤로, 좌우로 기울여가면서 X, Y, Size, Skew 항목을 어느정도 채우게 되면 calibrate 버튼이 활성화  되고, calibrate된 후에 commit 버튼을 통해 calibration한 정보를 저장할 수 있다. commit이 완료된다면 camera calibration 과정은 완료된 것이다.
 
@@ -216,7 +264,7 @@ AR marker에 얼마나 가까이 갈지 정하는 함수는 아래와 같다.
 
 최종적으로 제작된 사물함의 작동영상은 아래와 같다.
 
-https://user-images.githubusercontent.com/81222069/122674201-01b65100-d20f-11eb-8d5b-238eaad51481.mp4
+https://user-images.githubusercontent.com/81222069/122674276-5bb71680-d20f-11eb-9f04-9c9353ad3364.mp4
 
-ㄹㄴㅇ
+
 
