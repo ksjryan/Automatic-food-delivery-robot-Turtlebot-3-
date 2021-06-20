@@ -259,10 +259,11 @@ https://user-images.githubusercontent.com/81222069/122677640-1f3ee700-d21e-11eb-
 # 4. 시연영상 및 전체코드 다운로드
 
 아래 드라이브 링크 내 영상은 위의 과정들을 거쳐 만들어진 종합적인 Task를 수행하는 장면을 담고 있다.
-https://drive.google.com/file/d/19kDkX1ZS2LS7qNJWg1KdEW_JKrjYBiFB/view?usp=sharing
+
+시연영상: https://drive.google.com/file/d/19kDkX1ZS2LS7qNJWg1KdEW_JKrjYBiFB/view?usp=sharing
 
 ![image](https://user-images.githubusercontent.com/81222069/122677466-5660c880-d21d-11eb-9aaf-c1b6e933cf36.png)
 
 또한 전체적인 코드를 압축하여 아래 드라이브 링크에 올려두었다.
 
-https://drive.google.com/file/d/14X-BTSVutT-NmOuz50ipUG4lrQy5I7ul/view?usp=sharing
+압축코드: https://drive.google.com/file/d/14X-BTSVutT-NmOuz50ipUG4lrQy5I7ul/view?usp=sharing
