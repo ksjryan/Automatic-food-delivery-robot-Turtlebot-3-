@@ -216,7 +216,7 @@ AR marker에 얼마나 가까이 갈지 정하는 함수는 아래와 같다.
 
 최종적으로 제작된 사물함의 작동영상은 아래와 같다.
 
-https://user-images.githubusercontent.com/81222069/122674080-8b195380-d20e-11eb-8a24-940046afa8c2.mp4
+https://user-images.githubusercontent.com/81222069/122674201-01b65100-d20f-11eb-8d5b-238eaad51481.mp4
 
-
+ㄹㄴㅇ
 
