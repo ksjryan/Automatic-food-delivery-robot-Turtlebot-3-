@@ -49,7 +49,7 @@
 
 ## 2.3. Part C: 로봇 팔 제어
 
-### 2.3.1 c++ 언어를 이용한 로봇 팔 제어 (초기)
+### 2.3.1. c++ 언어를 이용한 로봇 팔 제어 (초기)
 
 로봇 팔 제어를 위한 첫 시도는 c++ 언어를 기반으로 하여 작성되었다. 따라서 move_group_interface를 사용하여 inverse kinematics와 forward kinematics를 풀었다.
 
@@ -86,3 +86,13 @@ https://user-images.githubusercontent.com/81222069/122670380-cdd23000-d1fc-11eb-
 ③ 사물함이 끝까지 열리지 않는 문제
 
 따라서 사물함 설계를 밀어서 여는 방식으로 다시 설계하였고 코드를 python으로 다시 짜게 되었다.
+
+### 2.3.2. python 언어를 이용한 로봇 팔 제어 (최종)
+
+파이썬은 moveit_command를 사용한다. moveit_command는 아래의 깃허브 주소를 통해 기본적인 사용법을 익힐 수 있다.
+
+moveit_command 관련 참고 링크: https://github.com/minwoominwoominwoo7/op_moveit_client
+
+![image](https://user-images.githubusercontent.com/81222069/122670885-2e626c80-d1ff-11eb-8b92-7cceca2e9fe2.png)
+
+
