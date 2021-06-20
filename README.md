@@ -106,8 +106,6 @@ https://user-images.githubusercontent.com/81222069/122676084-4c3bcb80-d217-11eb-
 
 깃허브에 쓰여있는 코드를 바탕으로 하되 좀 더 편하게 활용하기 위해서 클래스를 만들었다. 그리고 먼저 이 코드들이 잘 작동하는지 확인하기 위해 가제보 상에서 확인해보았다.
 
-https://user-images.githubusercontent.com/81222069/122676139-902ed080-d217-11eb-8799-e34d0c91744c.mp4
-
 가제보에서 잘 작동하는 것을 확인하였고 이를 실제 상황에 바로 적용시켜보았다.
 
 https://user-images.githubusercontent.com/81222069/122676165-b9e7f780-d217-11eb-8a4a-33a829243dad.mp4
