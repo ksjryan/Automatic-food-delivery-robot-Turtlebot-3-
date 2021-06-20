@@ -37,4 +37,4 @@
 
 ⑧  물체를 바닥에 내려놓음
 
-# 2. Part 별
+# 2. Part 별 Methodology & Results
