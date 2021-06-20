@@ -137,7 +137,7 @@ https://user-images.githubusercontent.com/81222069/122676377-cde02900-d218-11eb-
 
 위의 코드를 실행 시키면 아래 그림과 같이 SLAM이 실행된다.
 
-![image](https://user-images.githubusercontent.com/81222069/122674587-c157d280-d210-11eb-909a-6e3fa2ea4fbe.png)
+![image](https://user-images.githubusercontent.com/81222069/122677451-3fba7180-d21d-11eb-9a3b-85b19c8a7fef.png)
 
 이후 아래 코드를 이용해 키보드 조작으로 통해 로봇을 움직이며 map에 대한 정보를 얻는다.
 
@@ -167,7 +167,7 @@ https://user-images.githubusercontent.com/81222069/122676377-cde02900-d218-11eb-
 
 위의 코드중 image:= 다음과 camera:= 다음 부분을 앞서 rostopic으로 확인한 image와 camera의 발행 노드 이름으로 바꾸어야 한다. 해당 코드를 실행시키면 아래와 같은 화면이 나온다.
 
-![image](https://user-images.githubusercontent.com/81222069/122672717-1216fd80-d208-11eb-8db1-3f929a86a159.png)
+![image](https://user-images.githubusercontent.com/81222069/122677489-6ed0e300-d21d-11eb-8973-41685fe55c81.png)
 
 calibration을 위해서 특정 체스판을 필요로 하는데 아래 링크에서 체스판을 다운 받을 수 있다.
 
@@ -261,8 +261,7 @@ https://user-images.githubusercontent.com/81222069/122676808-91153180-d21a-11eb-
 아래 드라이브 링크 내 영상은 위의 과정들을 거쳐 만들어진 종합적인 Task를 수행하는 장면을 담고 있다.
 https://drive.google.com/file/d/19kDkX1ZS2LS7qNJWg1KdEW_JKrjYBiFB/view?usp=sharing
 
-![image](https://user-images.githubusercontent.com/81222069/122677180-2f55c700-d21c-11eb-9fa5-3a4ccf520a90.png)
-
+![image](https://user-images.githubusercontent.com/81222069/122677466-5660c880-d21d-11eb-9aaf-c1b6e933cf36.png)
 
 또한 전체적인 코드를 압축하여 아래 드라이브 링크에 올려두었다.
 
