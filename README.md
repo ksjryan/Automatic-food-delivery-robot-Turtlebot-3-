@@ -38,3 +38,11 @@
 ⑧  물체를 바닥에 내려놓음
 
 # 2. Methodology & Results
+
+우리는 1.2.의 시나리오를 이루기 위해서 총 4개의 part (A,B,C)로 나누어 작업을 진행했다.
+
+## 2.1. Part A: 라이다를 이용한 Navigation
+
+## 2.2. Part B: AR 마커 인식 및 이동
+
+## 2.3. Part C: 로봇 팔 제어
