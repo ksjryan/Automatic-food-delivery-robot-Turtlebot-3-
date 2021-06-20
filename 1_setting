@@ -1,0 +1,23 @@
+[PC]
+ifconfig
+nano ~/.bashrc  --> computer, computer
+source ~/.bashrc
+
+[rasp]
+ssh pi@IP
+ifconfig
+nano ~/.bashrc --> computer, robot
+source ~/.bashrc 
+
+[PC]
+roscore
+
+[rasp]
+roslaunch turtlebot3_bringup turtlebot3_robot.launch
+
+[PC]
+roslaunch turtlebot3_teleop turtlebot3_teleop_key.launch
+
+
+
+

@@ -1,0 +1,17 @@
+roscore
+
+ssh pi@192.168.0.13
+
+roslaunch turtlebot3_bringup turtlebot3_robot.launch
+
+roslaunch turtlebot3_manipulation_bringup turtlebot3_manipulation_bringup.launch
+
+roslaunch turtlebot3_manipulation_moveit_config move_group.launch
+
+roslaunch turtlebot3_manipulation_moveit_config moveit_rviz.launch
+
+roslaunch turtlebot3_manipulation_gui turtlebot3_manipulation_gui.launch(이건 안해도 됨 코드 없이 물리적으로 움직여야할 때 필요)
+
+rosrun arm_control grap_staff.py 물건집을 때
+
+rosrun arm_control arm_move.py 문 열때 

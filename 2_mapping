@@ -1,0 +1,23 @@
+[Rasp]
+roslaunch turtlebot3_bringup turtlebot3_robot.launch
+
+
+[PC]
+roslaunch turtlebot3_slam turtlebot3_slam.launch
+
+roslaunch turtlebot3_teleop turtlebot3_teleop_key.launch
+
+rosrun map_server map_saver -f ~/map
+
+roslaunch turtlebot3_navigation turtlebot3_navigation.launch map_file:=$HOME/map.yaml
+
+
+robot mapping (control shouldn't be automatic--too difficult)
+
+
+rosserviece call /global_localization
+
+
+
+mission-visualize the robot in rivz
+

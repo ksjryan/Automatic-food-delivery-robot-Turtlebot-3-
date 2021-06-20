@@ -1,0 +1,19 @@
+roslaunch turtlebot3_bringup turtlebot3_robot.launch
+roslaunch turtlebot3_bringup turtlebot3_rpicamera.launch
+
+rosrun image_transport republish compressed in:=raspicam_node/image raw out:=raspicam_node/image
+
+ROS_NAMESPACE=raspicam_node rosrun image_proc image_proc image_raw:=image _approximate_s=true _queue_size:=20
+
+rqt_image_view image
+
+roslaunch turtlebot3_automatic_parking_vision turtlebot3_automatic_parking_vision.launch
+
+
+change with this
+roslaunch turtlebot3_navigation turtlebot3_navigation.launch map_file:=$HOME/map.yaml
+
+
+
+
+

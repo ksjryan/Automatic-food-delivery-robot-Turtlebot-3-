@@ -1,0 +1,16 @@
+[rasp]
+roslaunch turtlebot3_bringup turtlebot3_robot.launch
+roslaunch turtlebot3_bringup turtlebot3_rpicamera.launch
+
+[computer]
+rosrun image_transport republish compressed in:=raspicam_node/image raw out:=raspicam_node/image
+
+ROS_NAMESPACE=raspicam_node rosrun image_proc image_proc image_raw:=image _approximate_s=true _queue_size:=20
+
+
+
+
+
+
+
+roslaunch turtlebot3_navigation turtlebot3_navigation.launch map_file:=$HOME/map.yaml
