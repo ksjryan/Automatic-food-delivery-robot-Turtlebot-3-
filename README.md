@@ -86,64 +86,33 @@ calibration을 완료한 뒤 turtlbot3_automatic_parking_vision의 코드도 수
 
 ### 2.3.1. c++ 언어를 이용한 로봇 팔 제어 (초기)
 
-로봇 팔 제어를 위한 첫 시도는 c++ 언어를 기반으로 하여 작성되었다. 따라서 move_group_interface를 사용하여 inverse kinematics와 forward kinematics를 풀었다.
+우리에 프로젝트에서 로봇팔이 수행해야 하는 역할은 딱 2가지이다. 첫 번째는 문을 여는 것이고 두 번째는 물건을 집는 것이다. 사실 이 모든 것은 카메라나 다른 센서 없이는 불가능하다. 하지만, 우리는 로봇팔에 카메라를 다는 것을 실패했고 다른 방식 즉 ar markar을 최대한 활용해서 물건을 집는 방식을 채택하였다. ar marker를 통해 최대한 같이 위치로 로봇을 이동시킬 수 있다면 남은 것은 정해진 좌표를 따라 로봇팔이 움직여주기만 하면 되는 것이다. 로봇팔을 정해진 위치로 이동시키기 위해서는 기구학과 역기구학을 이용해야 한다. ROS에서는 이런 역기구학과 기구학을 풀어주는 함수가 기본적으로 내장되어 있으므로 최대한 이를 활용하기로 하였다. 우리는 ROS에 내장된 함수 중에 moveit 라이브러리를 활용하였고 moveit 라이브러리의 도식도는 아래와 같다.
 
-![image](https://user-images.githubusercontent.com/81222069/122669941-6fa44d80-d1fa-11eb-9841-aa25e5143fbd.png)
+![image](https://user-images.githubusercontent.com/81222069/122676034-0a128a00-d217-11eb-98ec-fdc4f8ecaaf3.png)
 
-아래와 같이 C++ 코드의 일부를 가져와보았다. x, y, z 좌표를 입력해서 인버스 키네매틱을 푸는 함수 이다.
+처음에는 조교님이 주신 코드를 참고하여 그대로 사용했기 때문에 위에 도식도 중에 move_group_interface를 활용했었다. 로봇팔이 문을 열거나 물건을 잡기 위한 과정은 다음과 같다. 첫째로 manipulation_gui를 통해 로봇팔이 가야 하는 좌표들을 찾아낸다. 두 번째로 그 좌표들을 순서대로 역기구학 함수에 집어넣는다. 세 번째로 스텝별로 적절한 시간을 부여하며 최적의 시간을 찾아낸다. 우리가 열어야 하는 사물함은 아래 사진과 같았고 로봇팔이 이 문을 여는 영상도 아래에 첨부하였다.
 
-![image](https://user-images.githubusercontent.com/81222069/122670062-fd803880-d1fa-11eb-818d-00c43f2ff529.png)
+https://user-images.githubusercontent.com/81222069/122676056-26aec200-d217-11eb-9b63-3ffbd36be987.mp4
 
- x, y, z 값을 적절히 입력하여 그래스핑 포인트를 찾고 일련의 순서로 사물함을 열어보는 코드를 작성하여 아래와 같이 실험해보았다.
- 
- https://user-images.githubusercontent.com/81222069/122670276-21904980-d1fc-11eb-9c5f-90f85fcc5744.mp4
+영상을 보면 알 수 있듯이 로봇팔이 문을 열긴 하지만 조금 부자연스럽게 움직이는 것을 확인할 수 있다. 로봇팔이 이렇게 부자연스럽게 움직이는 이유는 역기구학을 통해서만 로봇팔을 움직였기 때문이다. 로봇팔의 끝점이 우리가 입력해놓은 좌표로 이동하는 방법은 여러 가지가 있기에 내장되어있는 역기구학 함수만으로는 우리가 원하는 경로를 설정할 수 없었다. 따라서, 여러번 반복할수록 로봇팔의 형태가 기괴한 형태로 변했고 이를 해결하기 위해 실행 전후로 각 축의 각도를 0도로 초기화해주는 코드를 만들어 문을 열기 전후로 집어 넣어주었다.
 
-하자민 위의 과정에서 아래와 같이 4 가지 문제점들이 존재했다.
+https://user-images.githubusercontent.com/81222069/122676084-4c3bcb80-d217-11eb-82dc-efd0925cfb2e.mp4
 
-① End effector의 좌표를 설정하는 방식이라 그리퍼가 있는 부분의 각도가 이상하게 설정되는 경우가 꽤 있었다.
+이제는 로봇팔이 좀 더 자연스럽게 움직이는 것을 확인할 수 있다. 하지만, 아직 해결해야 할 문제가 많았다. 일단 사물함이 완벽하게 고정이 되지 않아 사물함이 매번 같이 당겨지는 문제가 있었다. 또 다른 문제는 영상을 보면 알 수 있듯이 로봇팔의 움직임만으로는 사물함의 문을 완벽하게 열 수 없었다. 우리가 받은 로봇팔은 4축으로 x축(앞뒤), z축(위아래)밖에 움직일 수 없었기 때문이다. 가장 큰 문제는 로봇팔을 움직이는 언어가 c++이라는 것인데 로봇팔 이외의 코드들이 python으로 짜여있어 통합하기 어려웠다. 그래서 사물함 설계를 버튼을 누르면 여는 방식으로 다시 설계하였고 코드는 python으로 다시 짰다.
 
-② 여러 번 반복할 수록 그리퍼 각도가 점점 이상해졌다. 
+파이썬은 c++과 다르게 moveit_command(그림1 참고)를 사용하기 때문에 처음에는 이 moveit_command를 어떻게 쓰는지 매우 당혹스러웠었다. 그러다가 깃허브에서 moveit_command의 기본적인 사용법을 알게 되었다. 아래는 참고한 깃허브 주소이다.
 
-③ 사물함이 고정되어 있어야 로봇 팔이 제대로 문을 열 수 있었다.
+*moveit_command 관련 참고 코드:* https://github.com/minwoominwoominwoo7/op_moveit_client
 
-④ 사물함이 온전히 열리지 않았다.
+깃허브에 쓰여있는 코드를 바탕으로 하되 좀 더 편하게 활용하기 위해서 클래스를 만들었다. 그리고 먼저 이 코드들이 잘 작동하는지 확인하기 위해 가제보 상에서 확인해보았다.
 
-그래서 포워드 키네매틱 함수를 통해 매번 실행 전후로 각 축의 각도를 0으로 초기화 시켜주었다. 각도 초기화를 통해 올바른 경로로 움직이게 설정한 모습은 아래와 같다.
+https://user-images.githubusercontent.com/81222069/122676139-902ed080-d217-11eb-8799-e34d0c91744c.mp4
 
-https://user-images.githubusercontent.com/81222069/122670380-cdd23000-d1fc-11eb-9a2d-cada782063b3.mp4
+가제보에서 잘 작동하는 것을 확인하였고 이를 실제 상황에 바로 적용시켜보았다.
 
-하지만 아직 아래와 같은 3 가지의 여전히 남은 문제점들이 존재했다.
+https://user-images.githubusercontent.com/81222069/122676165-b9e7f780-d217-11eb-8a4a-33a829243dad.mp4
 
-① 사물함이 같이 땅겨지는 문제
-
-② 다른 언어(c++)로 짜여 있어 통합이 어려운 문제
-
-③ 사물함이 끝까지 열리지 않는 문제
-
-따라서 사물함 설계를 밀어서 여는 방식으로 다시 설계하였고 코드를 python으로 다시 짜게 되었다.
-
-### 2.3.2. python 언어를 이용한 로봇 팔 제어 (최종)
-
-파이썬은 moveit_command를 사용한다. moveit_command는 아래의 깃허브 주소를 통해 기본적인 사용법을 익힐 수 있다.
-
-moveit_command 관련 참고 링크: https://github.com/minwoominwoominwoo7/op_moveit_client
-
-![image](https://user-images.githubusercontent.com/81222069/122670885-2e626c80-d1ff-11eb-8b92-7cceca2e9fe2.png)
-
-깃허브에 쓰여있는 코드를 바탕으로 쓰기 편하게 클래스를 만들었다. 아래의 함수는 클래스에 정의 되어있는 함수의 일부이다.
-
-![image](https://user-images.githubusercontent.com/81222069/122671203-8188ef00-d200-11eb-85e3-1c9da117d74f.png)
-
-먼저 이 코드들이 잘 작동하는지 확인하기 위해 가제보 상에서 확인해보았다.
-
-    roscore
-    roslaunch turtlebot3_manipulation_gazebo turtlebot3_manipulation_gazebo.launch
-    roslaunch turtlebot3_manipulation_moveit_config move_group.launch
-    roslaunch turtlebot3_manipulation_moveit_config moveit_rviz.launch
-    rosrun arm_control arm_move.py
-
-https://user-images.githubusercontent.com/81222069/122671290-d9bff100-d200-11eb-9ecb-d2add7af04e0.mp4
-
+로봇팔이 사물함의 문을 잘 여는 것을 확인할 수 있다. 이와 비슷하게 물건을 잡는 코드도 짜 주었다.
 
 # 3. Appendix
 
