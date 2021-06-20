@@ -47,6 +47,27 @@
 
 ## 2.2. Part B: AR 마커 인식 및 이동
 
+### 2.2.1. Intel d345 camera의 사용 (기존 계획)
+
+기존 계획은 AR maker 인식이 아닌 물체를 직접 인식한 후 인식한 물체의 depth 정보를 이용해 물체 앞까지 이동하는 것이었다. 이를 위해 raspberry pi에서 이번 프로젝트에서 사용할 예정이였던 Intel d345 camera를 인식하게 하기위해 관련된 package를 설치하려고 했다. 아래 주소를 통해서 해당 package를 설치했다.
+
+Intel d345 camera package: https://github.com/IntelRealSense/librealsense/blob/development/doc/installation.md
+
+하지만 설치하는데 매우 오랜 시간이 걸리고, 설치를 다 했음에도 불구하고 많은 오류들과 함께 d345 camera를 인식하지 못했다. 그 이유에 대해서 찾아보니 intel d345 camera를 사용하기 위해서 주로 raspberry pi 4가 사용되는데 이번 프로젝트에서 사용되는 버전은 3이기 때문에 전혀 인식하지 못했다. 이 때문에 raspberry pi 말고 새로운 mini computer가 필요했고, 새로운 mini computer를 사용하기 위해서는 많은 시간과 다루는 방식을 다시 알아가야했기 때문에 다른 방식을 찾았고 이에 대한 해결 방안으로 AR marker를 인식하는 방식으로 바꾸게 되었다.
+
+### 2.2.2. AR 마커 인식 및 이동 코드
+
+AR maker를 인식한 후 해당 AR marker앞으로 이동하는 코드는 turtlebot3 github에 있는 turtlebot3_automatic_parking_vision을 이용했다. 해당 코드는 AR marker를 인식한 후 AR marker의 기존 크기를 이용해 거리를 측정하여 이동하는 방식이다. 해당 코드를 이용해 우리가 원하는 만큼 문이나 물체의 앞으로 가도록 코드를 수정하였다.
+
+turtlebot3_automatic_parking_vision 코드: https://github.com/ROBOTIS-GIT/turtlebot3_applications/tree/master/turtlebot3_automatic_parking_vision
+
+이때 선행되어야하는 작업이 camera calibration 작업이다. camera calibration작업은 왜곡보정을 해주기 때문에 반드시 필요하다. 이번 프로젝트에서는 정밀하게 물체나 문 앞으로 로봇이 이동해야하기 때문에 calibration작업을 거치지 않고서 camera를 이용한다면 이상한 곳으로 로봇이 이동할 것이다. 이번 프로젝트에서 사용한 카메라는 turtlebot에 부착되어 있는 pi camera를 사용했고 이를 calibration할 수 있는 코드는 ros-kinetic파일에 있다. 코드를 사용하는 자세한 방법은 appendix에서 설명되어 있다.
+
+calibration을 완료한 뒤 turtlbot3_automatic_parking_vision의 코드도 수정하였다. 코드는 많은 함수로 구성되있다. 크게 로봇의 위치를 가져오는 함수, AR marker의 위치를 가져오는 함수, 로봇을 회전, 전진, 후진시키는 함수, 로봇의 위치와 AR marker의 위치 정보를 비교하여 로봇이 얼만큼 회전, 전진해야 하는지 결정하는 함수로 구성되어있다. 수정한 코드는 로봇을 회전, 병진시키는 함수와 로봇이 얼만큼 전진, 회전해야 하는지 결정하는 함수 부분이다. 로봇을 회전, 병진시키는 함수에서는 우선 속도를 느리게 만들었다. 너무 빠르게 로봇이 이동하면 그만큼 오차도 커지기 때문에 조금 느린 속도록 회전, 병진운동 하게 만들었다. 로봇이 얼만큼 전진, 회전해야 하는지 결정하는 함수에서는 로봇이 멈추는 거리도 바꾸었다. AR marker와 약 30cm 정도 떨어진 거리에서 멈출 수 있도록 거리를 설정하였다. 또한 코드를 실행시켜보며 로봇이 실제상황에서 어떻게 움직이는지 관찰한 후에 로봇이 이동하는 y축 거리를 조절해주었다. 로봇이 움직이는 순서가 우선 AR marker와 x을 맞추기 위해 y축 방향으로 이동한뒤 90도 회전을 하여 설정한 x축 거리만큼 다가가도록 x축 방향으로 움직인다. 코드의 수정한 부분은 appendix에 있다.
+
+이를 통해 최종적으로 로봇이 움직이는 결과는 동영상 아래에서 확인할 수 있다.
+
+
 ## 2.3. Part C: 로봇 팔 제어
 
 ### 2.3.1. c++ 언어를 이용한 로봇 팔 제어 (초기)
