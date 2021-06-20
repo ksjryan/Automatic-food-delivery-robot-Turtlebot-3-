@@ -206,6 +206,24 @@ AR marker에 얼마나 가까이 갈지 정하는 함수는 아래와 같다.
     
 ## 3.3. Part C: 로봇 팔 제어
 
+### 3.3.1. 가제보 실행 명령어 순서
+
+    roscore
+    roslaunch turtlebot3_manipulation_gazebo turtlebot3_manipulation_gazebo.launch
+    roslaunch turtlebot3_manipulation_moveit_config move_group.launch
+    roslaunch turtlebot3_manipulation_moveit_config moveit_rviz.launch
+    rosrun arm_control arm_move.py
+
+### 3.3.2. 실제 Turtle bot 구동 실행 명령어 순서
+
+    roscore
+    ssh pi@192.168.0.13 (ras)
+    roslaunch turtlebot3_bringup turtlebot3_robot.launch (Pc)
+    roslaunch turtlebot3_manipulation_bringup turtlebot3_manipulation_bringup.launch
+    roslaunch turtlebot3_manipulation_moveit_config move_group.launch
+    roslaunch turtlebot3_manipulation_moveit_config moveit_rviz.launch
+    rosrun arm_control arm_move.py
+
 ## 3.4. 사물함 설계 관련
 
 ### 3.4.1. 사물함의 프로토타입 설계 및 제작 (V1)
@@ -221,7 +239,7 @@ AR marker에 얼마나 가까이 갈지 정하는 함수는 아래와 같다.
 
 ![image](https://user-images.githubusercontent.com/81222069/122673475-961eb480-d20b-11eb-822c-0c921ed0ff4e.png) *사물함 문을 여는 시나리오 테스트*
 
-### 3.4.2. 사물함의 프로토타입 설계 및 제작 (V2)
+### 3.4.3. 사물함의 프로토타입 설계 및 제작 (V2)
 
 대부분의 문제점이 구조물의 재질 자체의 내구성 때문에 발생하였다. 따라서 기존에 사용된 하드보드지 재질을 강성이 높은 재료로 변경하였다. 이 때 사용된 재료는 600×900 두께 10mm 우드락이며, 가공이 쉽고 강성이 높아 시나리오를 구현하는 데 적합하다고 판단하였다. 또한 로봇으로 인해 발생한 힘이 사물함의 문 부분에 집중되었기 때문에, 사물함의 문 부분의 강도를 높여야 시나리오를 안정적으로 수행할 수 있었다. 따라서 3D 프린터를 통해 제작한 보강재를 문 부분에 부착하여, 외부 힘에 대한 구조물의 강도를 높일 수 있었다. 3D 프린터로 출력하기 위한 보강재의 3D 모델링은 Solidworks 프로그램을 이용하여 제작하였으며, 사용된 3D 프린터는 Flashforge Finder 2.0 이고, 출력물의 강성과 내구성이 높아야 하기 때문에 PLA 재질의 필라멘트를 사용하였다.
 
@@ -243,9 +261,9 @@ https://user-images.githubusercontent.com/81222069/122676808-91153180-d21a-11eb-
 아래 드라이브 링크 내 영상은 위의 과정들을 거쳐 만들어진 종합적인 Task를 수행하는 장면을 담고 있다.
 https://drive.google.com/file/d/19kDkX1ZS2LS7qNJWg1KdEW_JKrjYBiFB/view?usp=sharing
 
-![image](https://user-images.githubusercontent.com/81222069/122677089-ad659e00-d21b-11eb-80a5-9650032d0bef.png)
+![image](https://user-images.githubusercontent.com/81222069/122677180-2f55c700-d21c-11eb-9fa5-3a4ccf520a90.png)
+
 
 또한 전체적인 코드를 압축하여 아래 드라이브 링크에 올려두었다.
+
 https://drive.google.com/file/d/14X-BTSVutT-NmOuz50ipUG4lrQy5I7ul/view?usp=sharing
-
-
