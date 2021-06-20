@@ -95,4 +95,17 @@ moveit_command 관련 참고 링크: https://github.com/minwoominwoominwoo7/op_m
 
 ![image](https://user-images.githubusercontent.com/81222069/122670885-2e626c80-d1ff-11eb-8b92-7cceca2e9fe2.png)
 
+깃허브에 쓰여있는 코드를 바탕으로 쓰기 편하게 클래스를 만들었다. 아래의 함수는 클래스에 정의 되어있는 함수의 일부이다.
+
+![image](https://user-images.githubusercontent.com/81222069/122671203-8188ef00-d200-11eb-85e3-1c9da117d74f.png)
+
+먼저 이 코드들이 잘 작동하는지 확인하기 위해 가제보 상에서 확인해보았다.
+
+    roscore
+    roslaunch turtlebot3_manipulation_gazebo turtlebot3_manipulation_gazebo.launch
+    roslaunch turtlebot3_manipulation_moveit_config move_group.launch
+    roslaunch turtlebot3_manipulation_moveit_config moveit_rviz.launch
+    rosrun arm_control arm_move.py
+
+https://user-images.githubusercontent.com/81222069/122671290-d9bff100-d200-11eb-9ecb-d2add7af04e0.mp4
 
